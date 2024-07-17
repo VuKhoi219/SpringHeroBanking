@@ -1,12 +1,22 @@
+using Account_Assignment.Eniti;
+using Account_Assignment.MySQLrepository;
+
 namespace Account_Assignment.Controller;
 
 public class MenuController
 {
-    public static void LogOrRegister()
+    
+    public void LogOrRegister()
     {
+        AdminController adminController = new AdminController();
+        UserMenu userMenu = new UserMenu();
+        AdminMenu adminMenu = new AdminMenu();
+        LoginRepository loginRepository = new LoginRepository();
+        UserAccountBank userAccountBank = new UserAccountBank();
+        
+        
         bool ll = true;
-        bool mk = true;
-
+        
         while (ll) 
         {
             Console.WriteLine("Vui lòng nập lựa chọn của bạn");
@@ -16,45 +26,45 @@ public class MenuController
             if (choice == 1)
             {
                 // đăng ký tài khoản
-                Console.WriteLine("Nhập tên tài khoản :");
-                string accountName = Console.ReadLine();
-                Console.WriteLine("nhập số điện thoại :");
-                string phone = Console.ReadLine();
-                Console.WriteLine("Nhập mật khẩu");
-                string password = Console.ReadLine();
-                while (mk)
-                {
-                    Console.WriteLine("Vui lòng nhập lại mật khẩu");
-                    string password2 = Console.ReadLine();
-                    if (password2.Equals(password))
-                    {
-                        mk = false;
-                    }
-                }
-                Console.WriteLine("Bạn là người dùng(1) hay admin(2)?");
-                int y = int.Parse(Console.ReadLine());
-                if (y==1)
-                {
-                    
-                }
-
-                if (y==2)
-                {
-                    
-                }
-                else
-                {
-                    Console.WriteLine("lựa chọn không hợp lệ");
-                }
+                adminController.AddNewUser();
             }
-
             if (choice == 2)
             {
                 ll = false;
                 Console.WriteLine("Nhập tên tài khoản :");
-                string accountName = Console.ReadLine();
+                string userName = Console.ReadLine();
                 Console.WriteLine("Nhập mật khẩu");
                 string password = Console.ReadLine();
+                // mã hóa
+                // string salt = BCrypt.Net.BCrypt.GenerateSalt();
+                // string password2 = BCrypt.Net.BCrypt.HashPassword(password, salt);
+                //
+                userAccountBank = loginRepository.checkAccount(userName, password);
+                if (userAccountBank != null)
+                {
+                    if (userAccountBank.Status ==1)
+                    {
+
+                        userMenu.UserAashboard(userAccountBank.AccountNumber,userAccountBank.Name);
+                    }
+                    else if (userAccountBank.Status == -1)
+                    {
+                        adminMenu.AdminDashboard(userAccountBank.Name); // đã ok
+                    }
+                    else if (userAccountBank.Status == 0)
+                    {
+                        Console.WriteLine("Tài khoản đã bị khóa");
+                    }
+                    else
+                    {
+                        Console.WriteLine("tài khoản không họp lệ ");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Sai tài khoản hoặc mật khẩu ");
+                }
+
                 // đăng nhập 
             }
             else

@@ -16,3 +16,5 @@ D:\Account-Assignment\Account-Assignment\bin\Debug\net8.0\Microsoft.Extensions.L
 D:\Account-Assignment\Account-Assignment\bin\Debug\net8.0\MySqlConnector.dll
 D:\Account-Assignment\Account-Assignment\obj\Debug\net8.0\Account-Assignment.csproj.AssemblyReference.cache
 D:\Account-Assignment\Account-Assignment\obj\Debug\net8.0\Account-.FCEF44B3.Up2Date
+D:\Account-Assignment\Account-Assignment\obj\Debug\net8.0\Account-Assignment.sourcelink.json
+D:\Account-Assignment\Account-Assignment\bin\Debug\net8.0\BCrypt.Net.dll

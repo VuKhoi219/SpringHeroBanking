@@ -7,7 +7,7 @@ public interface AdminHelperInterface
     void SearchUsersByName();
     void SearchUsersByAccountNumber();
     void SearchUsersByPhoneNumber();
-    void AddNewUser();
+    void AddNewUser(); // thành công
     void LockAndUnlockUserAccount();
     void SearchTransactionHistoryByAccountNumber();
     void ChangeAccountInformation();

@@ -1,9 +1,10 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System.Runtime.InteropServices.JavaScript;
+using Account_Assignment.Controller;
 using Account_Assignment.Eniti;
 using Account_Assignment.MySQLrepository;
+using BCrypt.Net;
 
-AdminRepository adminRepository = new AdminRepository();
-AdminAccountBank adminAccountBank = new AdminAccountBank();
-adminRepository.finByName("khoidk");
-adminAccountBank.show();
+MenuController menuController = new MenuController();
+menuController.LogOrRegister();
