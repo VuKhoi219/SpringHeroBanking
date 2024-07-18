@@ -46,15 +46,15 @@ public class AdminAccountBankRepository : AdminAccountBankRepositoryInterface
         return userAccountBanks;
     } // Chuyển sang User thành công
     
-    public UserAccountBank finByName(string name)
+    public UserAccountBank finByUserName(string userName)
     {
         UserAccountBank userAccountBank = null;
         try
         {
             MySqlConnection conn = new MySqlConnection(myConnectionString);
             conn.Open();
-            MySqlCommand sqlCommand = new MySqlCommand("Select * from user_account where name = @name ;", conn);
-            sqlCommand.Parameters.AddWithValue("@name", name);
+            MySqlCommand sqlCommand = new MySqlCommand("Select * from user_account where user_name = @userName ;", conn);
+            sqlCommand.Parameters.AddWithValue("@userName", userName);
             sqlCommand.Connection = conn;
             DbDataReader reader = sqlCommand.ExecuteReader();
             if (reader.Read())

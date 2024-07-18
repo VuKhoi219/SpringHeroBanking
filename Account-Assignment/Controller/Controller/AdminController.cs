@@ -10,25 +10,34 @@ public class AdminController : AdminHelperInterface
     private AdminAccountBankRepository _adminAccountBankRepository = new AdminAccountBankRepository();
     private TransactionRepository _transactionRepository = new TransactionRepository();
     private CommonFunctionRepository _commonFunctionRepository = new CommonFunctionRepository();
+
+    public void DisplayByPersonalInfo(UserAccountBank userAccountBank)
+    {
+        Console.WriteLine("{0, -15} ||  {1, -15} || {2, -15} || {3, -15} || {4, -15} || {5, -15} || {6, -15}  ", 
+            "Id", "Account Number","User name", "Name", "Phone", "Balance", "Status");
+        Console.WriteLine("{0, -15} || {1, -15} || {2, -15} || {3, -15} || {4, -15} || {5, -15} || {6, -15}  ",
+            userAccountBank.Id,userAccountBank.AccountNumber,userAccountBank.UseName,
+            userAccountBank.Name, userAccountBank.Phone, userAccountBank.Balance,userAccountBank.Status);
+    }
     public void UserList()
     {
         List<UserAccountBank> userRepositories = _adminAccountBankRepository.finAllUser();
-        Console.WriteLine("{0, -15} | {1, -30} | {2, -30} | {3, -30} | {4, -30} | {5, -30} | {6, -30} | {7,-30} ", 
-            "Id", "Account Number","User name","Password", "Name", "Phone", "Balance", "Status");
+        Console.WriteLine("{0, -15} | {1, -30} | {2, -30} | {3, -30} | {4, -30} | {5, -30} | {6, -30}  ", 
+            "Id", "Account Number","User name", "Name", "Phone", "Balance", "Status");
         foreach (var user in userRepositories)
         {
-            Console.WriteLine("{0, -15} | {1, -30} | {2, -30} | {3, -30} | {4, -30} | {5, -30} | {6, -30} | {7,-30} ",
-                user.Id,user.AccountNumber,user.UseName,user.PassWord, user.Name, user.Phone, user.Balance,user.Status);
+            Console.WriteLine("{0, -15} | {1, -30} | {2, -30} | {3, -30} | {4, -30} | {5, -30} | {6, -30}  ",
+                user.Id,user.AccountNumber,user.UseName, user.Name, user.Phone, user.Balance,user.Status);
         }
     } // thành công 
 
     public void TransactionHistoryList()
     {
         List<UserAccountBank> userAccountBanks = _transactionRepository.transactionHistory();
-        Console.WriteLine("{0,-30} {1,-30} {2,-30} {3,-30}","Account Number","Transaction history" ,"Transaction history content","Create at");
+        Console.WriteLine("{0,-30} || {1,-30} || {2,-30} || {3,-30}","Account Number","Transaction history" ,"Transaction history content","Create at");
         foreach (var transaction in userAccountBanks)
         {
-            Console.WriteLine("{0,-30} {1,-30} {2,-30} {3,-30}",transaction.AccountNumber,transaction.TransactionHistory,transaction.TransactionHistoryContent,transaction.CreatedAt);
+            Console.WriteLine("{0,-30} || {1,-30} || {2,-30} || {3,-30}",transaction.AccountNumber,transaction.TransactionHistory,transaction.TransactionHistoryContent,transaction.CreatedAt);
         }
     } // thành công
 
@@ -36,36 +45,25 @@ public class AdminController : AdminHelperInterface
     {
         Console.WriteLine("Vui lòng nhập tên tài khoản");
         string userName = Console.ReadLine();
-        UserAccountBank userAccountBank = _adminAccountBankRepository.finByName(userName);
-        Console.WriteLine("{0, -15}  {1, -15} {2, -15} {3, -15} {4, -15} {5, -15} {6, -15} {7,-15} ", 
-            "Id", "Account Number","User name","Password", "Name", "Phone", "Balance", "Status");
-        Console.WriteLine("{0, -15} {1, -15} {2, -15} {3, -15} {4, -15} {5, -15} {6, -15} {7,-15} ",
-            userAccountBank.Id,userAccountBank.AccountNumber,userAccountBank.UseName,userAccountBank.PassWord,
-            userAccountBank.Name, userAccountBank.Phone, userAccountBank.Balance,userAccountBank.Status);
+        UserAccountBank userAccountBank = _adminAccountBankRepository.finByUserName(userName);
+        DisplayByPersonalInfo(userAccountBank);
     } // thành công 
 
     public void SearchUsersByAccountNumber()
     {
-        Console.WriteLine("Vui lòng nhập số tài khoản ");
+        Console.WriteLine("Vui lòng nhập số tài khoản:");
         string accountNumber = Console.ReadLine() ;
         UserAccountBank userAccountBank = _adminAccountBankRepository.finByAccountNumber(accountNumber);
-        Console.WriteLine("{0, -15}  {1, -15} {2, -15} {3, -15} {4, -15} {5, -15} {6, -15} {7,-15} ", 
-            "Id", "Account Number","User name","Password", "Name", "Phone", "Balance", "Status");
-        Console.WriteLine("{0, -15} {1, -15} {2, -15} {3, -15} {4, -15} {5, -15} {6, -15} {7,-15} ",
-            userAccountBank.Id,userAccountBank.AccountNumber,userAccountBank.UseName,userAccountBank.PassWord, userAccountBank.Name, userAccountBank.Phone, userAccountBank.Balance,userAccountBank.Status);
+        DisplayByPersonalInfo(userAccountBank);
         
     } // thành công
 
     public void SearchUsersByPhoneNumber()  
     {
-        Console.WriteLine("Vui lòng nhập phone");
+        Console.WriteLine("Vui lòng nhập phone:");
         string phone = Console.ReadLine();
         UserAccountBank userAccountBank = _adminAccountBankRepository.finByPhone(phone);
-        Console.WriteLine("{0, -15}  {1, -15} {2, -15} {3, -15} {4, -15} {5, -15} {6, -15} {7,-15} ", 
-            "Id", "Account Number","User name","Password", "Name", "Phone", "Balance", "Status");
-        Console.WriteLine("{0, -15} {1, -15} {2, -15} {3, -15} {4, -15} {5, -15} {6, -15} {7,-15} ",
-            userAccountBank.Id,userAccountBank.AccountNumber,userAccountBank.UseName,userAccountBank.PassWord,
-            userAccountBank.Name, userAccountBank.Phone, userAccountBank.Balance,userAccountBank.Status);
+        DisplayByPersonalInfo(userAccountBank);
         
     } // thành công
 
@@ -118,12 +116,10 @@ public class AdminController : AdminHelperInterface
         {
             randomDigits += random.Next(0, 10).ToString();
         }
-
         userAccountBank.AccountNumber = randomDigits;
         // Console.WriteLine("Số tài khoản của bạn là : " + userAccountBank.AccountNumber);
 
         _commonFunctionRepository.save(userAccountBank);
-
     } // thành công
 
     public void LockAndUnlockUserAccount()

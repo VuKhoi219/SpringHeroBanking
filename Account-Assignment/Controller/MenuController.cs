@@ -36,9 +36,7 @@ public class MenuController
                 Console.WriteLine("Nhập mật khẩu");
                 string password = Console.ReadLine();
                 // mã hóa
-                // string salt = BCrypt.Net.BCrypt.GenerateSalt();
-                // string password2 = BCrypt.Net.BCrypt.HashPassword(password, salt);
-                //
+                
                 userAccountBank = loginRepository.checkAccount(userName, password);
                 if (userAccountBank != null)
                 {
@@ -60,11 +58,6 @@ public class MenuController
                         Console.WriteLine("tài khoản không họp lệ ");
                     }
                 }
-                else
-                {
-                    Console.WriteLine("Sai tài khoản hoặc mật khẩu ");
-                }
-
                 // đăng nhập 
             }
             else
