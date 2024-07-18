@@ -1,3 +1,5 @@
+using System.Data;
+using System.Data.Common;
 using Account_Assignment.Eniti;
 using MySqlConnector;
 
@@ -68,15 +70,42 @@ public class CommonFunctionRepository : CommonFunctionsRepositoryInterface
         {
             MySqlConnection conn = new MySqlConnection(myConnectionString);
             conn.Open();
-            MySqlCommand sqlCommand =
-                new MySqlCommand(
-                    "UPDATE user_account SET password = @newPassword WHERE account_number = @accountNumber and password = @passWord ",
-                    conn);
-            sqlCommand.Parameters.AddWithValue("@accountNumber", accountNumber);
-            sqlCommand.Parameters.AddWithValue("@passWord", password);
-            sqlCommand.Parameters.AddWithValue("@newPassword", userAccountBank.PassWord);
-            sqlCommand.ExecuteNonQuery();
-            Console.WriteLine("Lưu thành công");
+            
+            string hashedPassword = null;
+
+            using (MySqlCommand getPasswordSqlCommand = new MySqlCommand(
+                    "SELECT password FROM user_account WHERE account_number = @accountNumber",conn))
+            {
+                getPasswordSqlCommand.Parameters.AddWithValue("@accountNumber", accountNumber);
+                using (DbDataReader reader = getPasswordSqlCommand.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        hashedPassword = reader.GetString("password");
+                    }
+                }
+            }
+
+
+            bool passwordMatch = BCrypt.Net.BCrypt.Verify(password, hashedPassword);
+            if (passwordMatch)
+            {
+                using (MySqlCommand sqlCommand =
+                       new MySqlCommand(
+                           "UPDATE user_account SET password = @newPassword WHERE account_number = @accountNumber",
+                           conn))
+                {
+                    sqlCommand.Parameters.AddWithValue("@accountNumber", accountNumber);
+                    sqlCommand.Parameters.AddWithValue("@passWord", password);
+                    sqlCommand.Parameters.AddWithValue("@newPassword", userAccountBank.PassWord);
+                    sqlCommand.ExecuteNonQuery();
+                    Console.WriteLine("Lưu thành công");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Lỗi mật khẩu");
+            }
             conn.Close();
         }
         catch (MySqlException e)

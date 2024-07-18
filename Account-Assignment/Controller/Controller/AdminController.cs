@@ -87,9 +87,8 @@ public class AdminController : AdminHelperInterface
             password2 = Console.ReadLine();
         }
         // Mã Hóa
-        // string salt = BCrypt.Net.BCrypt.GenerateSalt();
-        // userAccountBank.PassWord = BCrypt.Net.BCrypt.HashPassword(password, salt);
-        userAccountBank.PassWord = password;
+        string salt = BCrypt.Net.BCrypt.GenerateSalt();
+        userAccountBank.PassWord = BCrypt.Net.BCrypt.HashPassword(password, salt);
         Console.WriteLine("Nhập Số điện thoại:");
         userAccountBank.Phone = Console.ReadLine();
         while (userAccountBank.Phone.Length != 10)
@@ -121,7 +120,7 @@ public class AdminController : AdminHelperInterface
         }
 
         userAccountBank.AccountNumber = randomDigits;
-        Console.WriteLine("Số tài khoản của bạn là : " + userAccountBank.AccountNumber);
+        // Console.WriteLine("Số tài khoản của bạn là : " + userAccountBank.AccountNumber);
 
         _commonFunctionRepository.save(userAccountBank);
 
@@ -175,10 +174,19 @@ public class AdminController : AdminHelperInterface
         UserAccountBank userAccountBank = new UserAccountBank();
         Console.WriteLine("Vui lòng nhập số tài khoản bạn muốn thay đổi");
         string accountNumber = Console.ReadLine();
-        Console.WriteLine("Nhập mật khẩu : ");
+        Console.WriteLine("Nhập mật khẩu cũ : ");
         string password = Console.ReadLine();
         Console.WriteLine("Nhập mật khẩu mới:");
-        userAccountBank.PassWord = Console.ReadLine();
+        string password2 = Console.ReadLine();
+        Console.WriteLine("Nhập lại mật khẩu");
+        string password3 = Console.ReadLine();
+        while (password2 != password3)
+        {
+            Console.WriteLine(" Nhập sai vui lòng nhập lại mật khẩu");
+            password3 = Console.ReadLine();
+        }
+        string salt = BCrypt.Net.BCrypt.GenerateSalt();
+        userAccountBank.PassWord = BCrypt.Net.BCrypt.HashPassword(password2, salt);
         _commonFunctionRepository.changePassword(userAccountBank, accountNumber, password);
     } // thành công 
 }

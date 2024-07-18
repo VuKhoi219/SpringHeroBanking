@@ -79,12 +79,21 @@ public class UserController : UserHelperInterface
     public void ChangePassword(string accountNumber)
     {
         UserAccountBank userAccountBank = new UserAccountBank();
-        Console.WriteLine("Nhập mật khẩu : ");
+        Console.WriteLine("Nhập mật khẩu cũ : ");
         string password = Console.ReadLine();
         Console.WriteLine("Nhập mật khẩu mới:");
-        userAccountBank.PassWord = Console.ReadLine();
-        _commonFunctionRepository.changePassword(userAccountBank, accountNumber, password);    }
-
+        string password2 = Console.ReadLine();
+        Console.WriteLine("Nhập lại mật khẩu");
+        string password3 = Console.ReadLine();
+        while (password2 != password3)
+        {
+            Console.WriteLine(" Nhập sai vui lòng nhập lại mật khẩu");
+            password3 = Console.ReadLine();
+        }
+        string salt = BCrypt.Net.BCrypt.GenerateSalt();
+        userAccountBank.PassWord = BCrypt.Net.BCrypt.HashPassword(password2, salt);
+        _commonFunctionRepository.changePassword(userAccountBank, accountNumber, password);
+    }
     public void ViewTransactionHistory(string accountNumber)
     {
         List<UserAccountBank> userAccountBanks = _transactionRepository.transactionHistoryByAccountBank(accountNumber);
