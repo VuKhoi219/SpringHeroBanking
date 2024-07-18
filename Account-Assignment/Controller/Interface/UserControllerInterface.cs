@@ -1,6 +1,6 @@
 namespace Account_Assignment.Controller;
 
-public interface UserHelperInterface
+public interface UserControllerInterface
 {
     void DepositMoney(string accountNumber);
     void WithdrawMoney(string accountNumber);

@@ -9,6 +9,7 @@ public class CommonFunctionRepository : CommonFunctionsRepositoryInterface
 {
     string myConnectionString = "server=127.0.0.1;uid=root;" +
                                 "pwd=;database=account-bank";
+
     public UserAccountBank save(UserAccountBank userAccountBank)
     {
         try
@@ -35,10 +36,11 @@ public class CommonFunctionRepository : CommonFunctionsRepositoryInterface
         {
             Console.WriteLine(ex.Message);
         }
-        return userAccountBank;
-    } // hoàn thành
 
-    public UserAccountBank editPersonalInformation(UserAccountBank  userAccountBank, string accountNumber)
+        return userAccountBank;
+    } 
+
+    public UserAccountBank editPersonalInformation(UserAccountBank userAccountBank, string accountNumber)
     {
         try
         {
@@ -61,8 +63,7 @@ public class CommonFunctionRepository : CommonFunctionsRepositoryInterface
         }
 
         return userAccountBank;
-            
-    } // hoàn thành
+    } 
 
     public UserAccountBank changePassword(UserAccountBank userAccountBank, string accountNumber, string password)
     {
@@ -70,11 +71,11 @@ public class CommonFunctionRepository : CommonFunctionsRepositoryInterface
         {
             MySqlConnection conn = new MySqlConnection(myConnectionString);
             conn.Open();
-            
+
             string hashedPassword = null;
 
             using (MySqlCommand getPasswordSqlCommand = new MySqlCommand(
-                    "SELECT password FROM user_account WHERE account_number = @accountNumber",conn))
+                       "SELECT password FROM user_account WHERE account_number = @accountNumber", conn))
             {
                 getPasswordSqlCommand.Parameters.AddWithValue("@accountNumber", accountNumber);
                 using (DbDataReader reader = getPasswordSqlCommand.ExecuteReader())
@@ -85,7 +86,6 @@ public class CommonFunctionRepository : CommonFunctionsRepositoryInterface
                     }
                 }
             }
-
 
             bool passwordMatch = BCrypt.Net.BCrypt.Verify(password, hashedPassword);
             if (passwordMatch)
@@ -106,6 +106,7 @@ public class CommonFunctionRepository : CommonFunctionsRepositoryInterface
             {
                 Console.WriteLine("Lỗi mật khẩu");
             }
+
             conn.Close();
         }
         catch (MySqlException e)
@@ -114,5 +115,5 @@ public class CommonFunctionRepository : CommonFunctionsRepositoryInterface
         }
 
         return userAccountBank;
-    } // hoàn thành
+    } 
 }

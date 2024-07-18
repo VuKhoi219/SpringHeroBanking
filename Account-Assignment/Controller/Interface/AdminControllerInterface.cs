@@ -1,13 +1,16 @@
+using Account_Assignment.Eniti;
+
 namespace Account_Assignment.Controller;
 
-public interface AdminHelperInterface
+public interface AdminControllerInterface
 {
     void UserList();
     void TransactionHistoryList();
+    void DisplayByPersonalInfo(UserAccountBank userAccountBank);
     void SearchUsersByName();
     void SearchUsersByAccountNumber();
     void SearchUsersByPhoneNumber();
-    void AddNewUser(); // thành công
+    void AddNewUser(); 
     void LockAndUnlockUserAccount();
     void SearchTransactionHistoryByAccountNumber();
     void ChangeAccountInformation();

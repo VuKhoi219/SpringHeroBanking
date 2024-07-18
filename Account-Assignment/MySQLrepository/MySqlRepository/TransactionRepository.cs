@@ -9,6 +9,7 @@ public class TransactionRepository : TransactionRepositoryInterface
 {
     string myConnectionString = "server=127.0.0.1;uid=root;" +
                                 "pwd=;database=account-bank";
+
     public List<UserAccountBank> transactionHistoryByAccountBank(string accountNumber)
     {
         List<UserAccountBank> userAccountBanks = new List<UserAccountBank>();
@@ -17,7 +18,8 @@ public class TransactionRepository : TransactionRepositoryInterface
             MySqlConnection conn = new MySqlConnection(myConnectionString);
             conn.Open();
             MySqlCommand sqlCommand =
-                new MySqlCommand("Select * from transaction_history where account_number = @accountNumber ORDER BY id;", conn);
+                new MySqlCommand("Select * from transaction_history where account_number = @accountNumber ORDER BY id;",
+                    conn);
             sqlCommand.Parameters.AddWithValue("@accountNumber", accountNumber);
             sqlCommand.Connection = conn;
             DbDataReader reader = sqlCommand.ExecuteReader();
@@ -32,6 +34,7 @@ public class TransactionRepository : TransactionRepositoryInterface
                 userAccountBank.CreatedAt = reader.GetDateTime("created_at");
                 userAccountBanks.Add(userAccountBank);
             }
+
             conn.Close();
         }
         catch (Exception e)
@@ -41,8 +44,8 @@ public class TransactionRepository : TransactionRepositoryInterface
         }
 
         return userAccountBanks;
-        
-    } // hoàn thành
+    }
+
     public List<UserAccountBank> transactionHistory()
     {
         List<UserAccountBank> userAccountBanks = new List<UserAccountBank>();
@@ -64,6 +67,7 @@ public class TransactionRepository : TransactionRepositoryInterface
                 adminAccountBank.CreatedAt = reader.GetDateTime("created_at");
                 userAccountBanks.Add(adminAccountBank);
             }
+
             conn.Close();
         }
         catch (Exception e)
@@ -72,5 +76,5 @@ public class TransactionRepository : TransactionRepositoryInterface
         }
 
         return userAccountBanks;
-    } // hoàn thành 
+    }
 }

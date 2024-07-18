@@ -3,13 +3,14 @@ namespace Account_Assignment.Controller;
 public class UserMenu
 {
     private UserController _userController = new UserController();
-    public void UserAashboard(string accountNumber,string name)
+
+    public void UserAashboard(string accountNumber, string name)
     {
         bool ll = true;
-        while (ll) 
+        while (ll)
         {
             Console.WriteLine("------Ngân hàng Spring Hero Bank------");
-            Console.WriteLine("Chào mừng {0} quay trở lại . Vui lòng chọn thao tác ",name);
+            Console.WriteLine("Chào mừng {0} quay trở lại . Vui lòng chọn thao tác ", name);
             Console.WriteLine("Vui lòng nập lựa chọn của bạn");
             Console.WriteLine("1.Gửi tiền");
             Console.WriteLine("2.Rút Tiền");
@@ -37,7 +38,7 @@ public class UserMenu
                 case 4:
                     _userController.CheckBalance(accountNumber);
                     // truy vấn số dư
-                    break; 
+                    break;
                 case 5:
                     _userController.EditPersonalInformation(accountNumber);
                     // thay đổi thông tin cá nhaan

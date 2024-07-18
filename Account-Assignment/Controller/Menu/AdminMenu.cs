@@ -10,8 +10,8 @@ public class AdminMenu
         AdminController adminController = new AdminController();
         bool ll = true;
         Console.WriteLine("------ Ngân hàng Spring Hero Bank--------");
-        Console.WriteLine("chào mừng Admin {0} quay trở lại ",name);
-        while (ll) 
+        Console.WriteLine("chào mừng Admin {0} quay trở lại ", name);
+        while (ll)
         {
             Console.WriteLine("Vui lòng chọn thao tác");
             Console.WriteLine("1. Danh sách người dùng");
@@ -43,7 +43,7 @@ public class AdminMenu
                 case 4:
                     // tìm theo số tài khoản
                     adminController.SearchUsersByAccountNumber();
-                    break; 
+                    break;
                 case 5:
                     // tìm theo số điện thoại
                     adminController.SearchUsersByPhoneNumber();

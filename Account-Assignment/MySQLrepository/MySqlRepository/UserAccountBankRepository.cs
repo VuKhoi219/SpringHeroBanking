@@ -51,7 +51,7 @@ public class UserAccountBankRepository : UseAccountBankRepositoryInterface
             throw;
         }
         return userAccountBank;
-    } // đã hoàn thành
+    } 
 
     public UserAccountBank withdrawMoney(UserAccountBank userAccountBank ,double transactionAmount)
     {
@@ -101,7 +101,7 @@ public class UserAccountBankRepository : UseAccountBankRepositoryInterface
         }
         return userAccountBank;
         
-    } // hoàn thành 
+    }  
 
     public UserAccountBank transferMoney(UserAccountBank userAccountBank,double transactionAmount)
     {
@@ -176,7 +176,7 @@ public class UserAccountBankRepository : UseAccountBankRepositoryInterface
             throw;
         }
         return userAccountBank;
-    } // hooàn thành 
+    }  
 
     public UserAccountBank CheckBalance(UserAccountBank userAccountBank)
     {
@@ -203,6 +203,6 @@ public class UserAccountBankRepository : UseAccountBankRepositoryInterface
         }
         return userAccountBank;
         
-    } // hoaàn thành 
+    }  
     
 }

@@ -10,14 +10,18 @@ public class LoginRepository : LoginRepositoryInterface
 {
     string myConnectionString = "server=127.0.0.1;uid=root;" +
                                 "pwd=;database=account-bank";
-    public UserAccountBank checkAccount(String userName , string password)
+
+    public UserAccountBank checkAccount(String userName, string password)
     {
         UserAccountBank userAccountBank = null;
         try
         {
             MySqlConnection conn = new MySqlConnection(myConnectionString);
             conn.Open();
-            MySqlCommand sqlCommand = new MySqlCommand("Select account_number,user_name,password,name,status from user_account where user_name = @userName ", conn);
+            MySqlCommand sqlCommand =
+                new MySqlCommand(
+                    "Select account_number,user_name,password,name,status from user_account where user_name = @userName ",
+                    conn);
             sqlCommand.Parameters.AddWithValue("@userName", userName);
             sqlCommand.Connection = conn;
             DbDataReader reader = sqlCommand.ExecuteReader();
@@ -40,15 +44,15 @@ public class LoginRepository : LoginRepositoryInterface
                 }
                 // sqlCommand.ExecuteNonQuery();
             }
- 
-            conn.Close();
 
+            conn.Close();
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             throw;
         }
+
         return userAccountBank;
     }
 }
