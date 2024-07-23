@@ -6,23 +6,22 @@ using MySqlConnector;
 
 namespace Account_Assignment.MySQLrepository;
 
-public class LoginRepository : LoginRepositoryInterface
+public class CheckAccountRepository : CheckAccountRepositoryInterface
 {
     string myConnectionString = "server=127.0.0.1;uid=root;" +
                                 "pwd=;database=account-bank";
 
-    public UserAccountBank checkAccount(String userName, string password)
+    public UserAccountBank checkAccount(string fieldName, string fieldValue, string password)
     {
         UserAccountBank userAccountBank = null;
         try
         {
             MySqlConnection conn = new MySqlConnection(myConnectionString);
             conn.Open();
-            MySqlCommand sqlCommand =
-                new MySqlCommand(
-                    "Select account_number,user_name,password,name,status from user_account where user_name = @userName ",
-                    conn);
-            sqlCommand.Parameters.AddWithValue("@userName", userName);
+            string query =
+                $"Select account_number,user_name,password,name,status from user_account where {fieldName} = @fieldValue ";
+            MySqlCommand sqlCommand = new MySqlCommand(query, conn);
+            sqlCommand.Parameters.AddWithValue("@fieldValue", fieldValue);
             sqlCommand.Connection = conn;
             DbDataReader reader = sqlCommand.ExecuteReader();
             if (reader.Read())
@@ -54,5 +53,15 @@ public class LoginRepository : LoginRepositoryInterface
         }
 
         return userAccountBank;
+    }
+
+    public UserAccountBank checkAccountBankByUserName(string userName, string password)
+    {
+        return checkAccount("user_name", userName, password);
+    }
+
+    public UserAccountBank checkAccountBankByAccountBank(string accountBank, string password)
+    {
+        return checkAccount("account_number", accountBank, password);
     }
 }

@@ -5,7 +5,7 @@ using MySqlConnector;
 
 namespace Account_Assignment.MySQLrepository;
 
-public class UserAccountBankRepository : UseAccountBankRepositoryInterface
+public class UserAccountBankRepository : CommonFunctionRepository, UseAccountBankRepositoryInterface
 {
     string myConnectionString = "server=127.0.0.1;uid=root;" +
                                 "pwd=;database=account-bank";
@@ -131,13 +131,8 @@ public class UserAccountBankRepository : UseAccountBankRepositoryInterface
             sqlCommand1.Parameters.AddWithValue("@transactionAmount",transactionAmount);
             sqlCommand1.Parameters.AddWithValue("@accountNumber", userAccountBank.recipientAccount);
             sqlCommand1.Transaction = transaction;
-            int check2 = sqlCommand1.ExecuteNonQuery();
-            if (check2 == 0) // check tài khoản có đủ tền không nếu check = 0 thì sẽ thoát
-            {
-                Console.WriteLine("Số tài khoản không tồn tài");
-                transaction.Rollback();
-                return userAccountBank;
-            }
+            sqlCommand1.ExecuteNonQuery();
+
             // thực hiện thm lịch sử giao dịch
             MySqlCommand sqlCommand2 =
                 new MySqlCommand(

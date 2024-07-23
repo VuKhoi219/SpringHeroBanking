@@ -25,7 +25,7 @@ public class TransactionRepository : TransactionRepositoryInterface
             DbDataReader reader = sqlCommand.ExecuteReader();
             while (reader.Read())
             {
-                UserAccountBank userAccountBank = new AdminAccountBank();
+                UserAccountBank userAccountBank = new UserAccountBank();
                 userAccountBank.Id = reader.GetInt32("id");
                 Console.WriteLine(userAccountBank.Id);
                 userAccountBank.AccountNumber = reader.GetString("account_number");

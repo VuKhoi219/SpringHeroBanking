@@ -2,7 +2,7 @@ using Account_Assignment.Eniti;
 
 namespace Account_Assignment.MySQLrepository;
 
-public interface AdminAccountBankRepositoryInterface
+public interface AdminAccountBankRepositoryInterface 
 {
     List<UserAccountBank> finAllUser();
     UserAccountBank finByField(string fieldName, string fieldValue);

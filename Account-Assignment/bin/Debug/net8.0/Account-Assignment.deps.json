@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v8.0": {
       "Account-Assignment/1.0.0": {
         "dependencies": {
+          "BCrypt-Official": "0.1.109",
           "BCrypt.Net": "0.1.0",
           "MySqlConnector": "2.3.7"
         },
@@ -15,14 +16,15 @@
           "Account-Assignment.dll": {}
         }
       },
-      "BCrypt.Net/0.1.0": {
+      "BCrypt-Official/0.1.109": {
         "runtime": {
-          "lib/net35/BCrypt.Net.dll": {
-            "assemblyVersion": "0.1.4141.31969",
+          "lib/BCrypt.Net.dll": {
+            "assemblyVersion": "0.1.5073.29922",
             "fileVersion": "0.1.0.0"
           }
         }
       },
+      "BCrypt.Net/0.1.0": {},
       "Microsoft.Extensions.Logging.Abstractions/7.0.1": {
         "runtime": {
           "lib/net7.0/Microsoft.Extensions.Logging.Abstractions.dll": {
@@ -49,6 +51,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "BCrypt-Official/0.1.109": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-4iTKqcCn1Eb3fsbbjhv9d9bwswCvEwXavwwo+XTrYAGCfP1YfVZGmRybKWLf2A6BDh+9bZn4zK6AnQaNcqtraA==",
+      "path": "bcrypt-official/0.1.109",
+      "hashPath": "bcrypt-official.0.1.109.nupkg.sha512"
     },
     "BCrypt.Net/0.1.0": {
       "type": "package",

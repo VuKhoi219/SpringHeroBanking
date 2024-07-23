@@ -5,7 +5,7 @@ using MySqlConnector;
 
 namespace Account_Assignment.MySQLrepository;
 
-public class CommonFunctionRepository : CommonFunctionsRepositoryInterface
+public class CommonFunctionRepository : TransactionRepository, CommonFunctionsRepositoryInterface 
 {
     string myConnectionString = "server=127.0.0.1;uid=root;" +
                                 "pwd=;database=account-bank";

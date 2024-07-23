@@ -1,14 +1,25 @@
 {
   "version": 2,
-  "dgSpecHash": "s4TtB58gEycBl/51DpUqLdnh3GNDXgj4ypw9tcNHdB+SQLzwYCjOmOZW5qrxf/IwQQV556ivykYKP3RT5s7rag==",
+  "dgSpecHash": "L4jqMNaq7W7ReCvWBqz3G1PmpjThXtKw7MKKTcFxNulLyi8Z+FCX622T7z1T4SALk0+RNChDAhYlmyi3aDrONw==",
   "success": true,
   "projectFilePath": "D:\\Account-Assignment\\Account-Assignment\\Account-Assignment.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\DELL G15\\.nuget\\packages\\bcrypt-official\\0.1.109\\bcrypt-official.0.1.109.nupkg.sha512",
     "C:\\Users\\DELL G15\\.nuget\\packages\\bcrypt.net\\0.1.0\\bcrypt.net.0.1.0.nupkg.sha512",
     "C:\\Users\\DELL G15\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\7.0.1\\microsoft.extensions.logging.abstractions.7.0.1.nupkg.sha512",
     "C:\\Users\\DELL G15\\.nuget\\packages\\mysqlconnector\\2.3.7\\mysqlconnector.2.3.7.nupkg.sha512"
   ],
   "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'BCrypt-Official 0.1.109' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net8.0'. This package may not be fully compatible with your project.",
+      "libraryId": "BCrypt-Official",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
     {
       "code": "NU1701",
       "level": "Warning",
