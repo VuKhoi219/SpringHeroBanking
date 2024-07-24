@@ -1,8 +1,10 @@
-using Account_Assignment.Eniti;
+using Account_Assignment.Enity;
 
-namespace Account_Assignment.MySQLrepository;
+namespace Account_Assignment.MySQLrepository.Interface;
 
-public interface CheckAccountRepositoryInterface
+public interface ICheckAccountRepository
 {
-    public UserAccountBank checkAccount(string fieldName, string fieldValue, string password);
+    public UserAccountBank? CheckAccount(string fieldName, string? fieldValue, string password);
+    public UserAccountBank? CheckAccountBankByUserName(string? userName, string password);
+    public UserAccountBank? CheckAccountBankByAccountBank(string? accountBank, string password);
 }

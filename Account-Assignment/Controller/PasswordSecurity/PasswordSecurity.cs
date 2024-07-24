@@ -2,17 +2,17 @@ namespace Account_Assignment.Controller.PasswordSecurity;
 
 public class PasswordSecurity
 {
-        public bool DecryptPassword(string password, string hashedPassword)
-        {
-            bool check = BCrypt.Net.BCrypt.Verify(password, hashedPassword);
-            
-            return check;
-        }
+    public bool DecryptPassword(string password, string hashedPassword)
+    {
+        bool check = BCrypt.Net.BCrypt.Verify(password, hashedPassword);
 
-        public string EncryptPassword(string password)
-        {
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
-            
-            return hashedPassword;
-        }
+        return check;
+    }
+
+    public string EncryptPassword(string password)
+    {
+        string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+
+        return hashedPassword;
+    }
 }

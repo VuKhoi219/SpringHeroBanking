@@ -1,5 +1,7 @@
-using Account_Assignment.Eniti;
+using Account_Assignment.Controller.Controller;
+using Account_Assignment.Enity;
 using Account_Assignment.MySQLrepository;
+using Account_Assignment.MySQLrepository.MySqlRepository;
 
 namespace Account_Assignment.Controller;
 
@@ -11,7 +13,7 @@ public class MenuController
         UserMenu userMenu = new UserMenu();
         AdminMenu adminMenu = new AdminMenu();
         CheckAccountRepository checkAccountRepository = new CheckAccountRepository();
-        UserAccountBank userAccountBank = new UserAccountBank();
+        UserAccountBank? userAccountBank = new UserAccountBank();
 
 
         bool ll = true;
@@ -30,7 +32,7 @@ public class MenuController
             if (choice == 2)
             {
                 ll = false;
-                string userOrAccount = null;
+                string? userOrAccount = null;
 
                 Console.WriteLine("Chọn phương thức đăng nhập: ");
                 Console.WriteLine("1.Đăng nhập bằng tên tài khoản");
@@ -51,11 +53,11 @@ public class MenuController
                 string password = Console.ReadLine();
                 if (choice2 == 1)
                 {
-                    userAccountBank = checkAccountRepository.checkAccountBankByUserName(userOrAccount, password);
+                    userAccountBank = checkAccountRepository.CheckAccountBankByUserName(userOrAccount, password);
                 }
                 else if (choice2 == 2)
                 {
-                    userAccountBank = checkAccountRepository.checkAccountBankByAccountBank(userOrAccount, password);
+                    userAccountBank = checkAccountRepository.CheckAccountBankByAccountBank(userOrAccount, password);
                 }
 
                 if (userAccountBank != null)

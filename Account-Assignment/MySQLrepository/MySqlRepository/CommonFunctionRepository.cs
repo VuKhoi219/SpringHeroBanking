@@ -1,20 +1,21 @@
 using System.Data;
 using System.Data.Common;
-using Account_Assignment.Eniti;
+using Account_Assignment.Enity;
+using Account_Assignment.MySQLrepository.Interface;
 using MySqlConnector;
 
-namespace Account_Assignment.MySQLrepository;
+namespace Account_Assignment.MySQLrepository.MySqlRepository;
 
-public class CommonFunctionRepository : TransactionRepository, CommonFunctionsRepositoryInterface 
+public class CommonFunctionRepository : TransactionRepository, ICommonFunctionsRepository
 {
-    string myConnectionString = "server=127.0.0.1;uid=root;" +
-                                "pwd=;database=account-bank";
+    string _myConnectionString = "server=127.0.0.1;uid=root;" +
+                                 "pwd=;database=account-bank";
 
-    public UserAccountBank save(UserAccountBank userAccountBank)
+    public UserAccountBank Save(UserAccountBank userAccountBank)
     {
         try
         {
-            MySqlConnection conn = new MySqlConnection(myConnectionString);
+            MySqlConnection conn = new MySqlConnection(_myConnectionString);
             conn.Open();
             MySqlCommand sqlCommand =
                 new MySqlCommand(
@@ -38,13 +39,13 @@ public class CommonFunctionRepository : TransactionRepository, CommonFunctionsRe
         }
 
         return userAccountBank;
-    } 
+    }
 
-    public UserAccountBank editPersonalInformation(UserAccountBank userAccountBank, string accountNumber)
+    public UserAccountBank EditPersonalInformation(UserAccountBank userAccountBank, string? accountNumber)
     {
         try
         {
-            MySqlConnection conn = new MySqlConnection(myConnectionString);
+            MySqlConnection conn = new MySqlConnection(_myConnectionString);
             conn.Open();
             MySqlCommand sqlCommand =
                 new MySqlCommand(
@@ -63,16 +64,16 @@ public class CommonFunctionRepository : TransactionRepository, CommonFunctionsRe
         }
 
         return userAccountBank;
-    } 
+    }
 
-    public UserAccountBank changePassword(UserAccountBank userAccountBank, string accountNumber, string password)
+    public UserAccountBank ChangePassword(UserAccountBank userAccountBank, string? accountNumber, string password)
     {
         try
         {
-            MySqlConnection conn = new MySqlConnection(myConnectionString);
+            MySqlConnection conn = new MySqlConnection(_myConnectionString);
             conn.Open();
 
-            string hashedPassword = null;
+            string? hashedPassword = null;
 
             using (MySqlCommand getPasswordSqlCommand = new MySqlCommand(
                        "SELECT password FROM user_account WHERE account_number = @accountNumber", conn))
@@ -115,5 +116,5 @@ public class CommonFunctionRepository : TransactionRepository, CommonFunctionsRe
         }
 
         return userAccountBank;
-    } 
+    }
 }

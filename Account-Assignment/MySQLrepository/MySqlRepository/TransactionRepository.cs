@@ -1,24 +1,25 @@
 using System.Data;
 using System.Data.Common;
-using Account_Assignment.Eniti;
+using Account_Assignment.Enity;
+using Account_Assignment.MySQLrepository.Interface;
 using MySqlConnector;
 
-namespace Account_Assignment.MySQLrepository;
+namespace Account_Assignment.MySQLrepository.MySqlRepository;
 
-public class TransactionRepository : TransactionRepositoryInterface
+public class TransactionRepository : ITransactionRepository
 {
-    string myConnectionString = "server=127.0.0.1;uid=root;" +
-                                "pwd=;database=account-bank";
+    string _myConnectionString = "server=127.0.0.1;uid=root;" +
+                                 "pwd=;database=account-bank";
 
-    public List<UserAccountBank> transactionHistoryByAccountBank(string accountNumber)
+    public List<UserAccountBank> TransactionHistoryByAccountBank(string? accountNumber)
     {
         List<UserAccountBank> userAccountBanks = new List<UserAccountBank>();
         try
         {
-            MySqlConnection conn = new MySqlConnection(myConnectionString);
+            MySqlConnection conn = new MySqlConnection(_myConnectionString);
             conn.Open();
             MySqlCommand sqlCommand =
-                new MySqlCommand("Select * from transaction_history where account_number = @accountNumber ORDER BY id;",
+                new MySqlCommand("Select * from transaction_history where account_number = @accountNumber;",
                     conn);
             sqlCommand.Parameters.AddWithValue("@accountNumber", accountNumber);
             sqlCommand.Connection = conn;
@@ -27,7 +28,6 @@ public class TransactionRepository : TransactionRepositoryInterface
             {
                 UserAccountBank userAccountBank = new UserAccountBank();
                 userAccountBank.Id = reader.GetInt32("id");
-                Console.WriteLine(userAccountBank.Id);
                 userAccountBank.AccountNumber = reader.GetString("account_number");
                 userAccountBank.TransactionHistory = reader.GetString("transaction_history");
                 userAccountBank.TransactionHistoryContent = reader.GetString("transaction_history_content");
@@ -46,13 +46,13 @@ public class TransactionRepository : TransactionRepositoryInterface
         return userAccountBanks;
     }
 
-    public List<UserAccountBank> transactionHistory()
+    public List<UserAccountBank> TransactionHistory()
     {
         List<UserAccountBank> userAccountBanks = new List<UserAccountBank>();
 
         try
         {
-            MySqlConnection conn = new MySqlConnection(myConnectionString);
+            MySqlConnection conn = new MySqlConnection(_myConnectionString);
             conn.Open();
             MySqlCommand sqlCommand = new MySqlCommand("Select * from transaction_history  ", conn);
             sqlCommand.Connection = conn;

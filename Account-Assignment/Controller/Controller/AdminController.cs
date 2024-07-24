@@ -1,11 +1,10 @@
-using System.Runtime.InteropServices.JavaScript;
-using Account_Assignment.Eniti;
-using Account_Assignment.MySQLrepository;
-using Transaction = System.Transactions.Transaction;
+using Account_Assignment.Controller.Interface;
+using Account_Assignment.Enity;
+using Account_Assignment.MySQLrepository.MySqlRepository;
 
-namespace Account_Assignment.Controller;
+namespace Account_Assignment.Controller.Controller;
 
-public class AdminController : AdminControllerInterface
+public class AdminController : IAdminControllerInterface
 {
     private AdminAccountBankRepository _adminAccountBankRepository = new AdminAccountBankRepository();
     private PasswordSecurity.PasswordSecurity _passwordSecurity = new PasswordSecurity.PasswordSecurity();
@@ -14,7 +13,7 @@ public class AdminController : AdminControllerInterface
     //hiển thị danh sách ngươ dùng
     public void UserList()
     {
-        List<UserAccountBank> userRepositories = _adminAccountBankRepository.finAllUser();
+        List<UserAccountBank> userRepositories = _adminAccountBankRepository.FindAllUser();
         Console.WriteLine("{0, -15} | {1, -30} | {2, -30} | {3, -30} | {4, -30} | {5, -30} | {6, -30}  ",
             "Id", "Số tài khoản", "Tên tài khoản", "tên người dùng", "Số tài khoản", "Số dư", "Trạng thái");
         foreach (var user in userRepositories)
@@ -27,7 +26,7 @@ public class AdminController : AdminControllerInterface
     // hiển thị tất cả danh sách lịch suwr giao dịch
     public void TransactionHistoryList()
     {
-        List<UserAccountBank> userAccountBanks = _adminAccountBankRepository.transactionHistory();
+        List<UserAccountBank> userAccountBanks = _adminAccountBankRepository.TransactionHistory();
         Console.WriteLine("{0,-30} || {1,-30} || {2,-30} || {3,-30}", "Số tài khoản", "Lịch sử giao dịch",
             "Nội dung giao dịch", "Ngày giao dịch");
         foreach (var users in userAccountBanks)
@@ -38,7 +37,7 @@ public class AdminController : AdminControllerInterface
     }
 
     // hiển thị theo thông tin cá nhân 
-    public void DisplayByPersonalInfo(UserAccountBank userAccountBank)
+    public void DisplayByPersonalInfo(UserAccountBank? userAccountBank)
     {
         Console.WriteLine("{0, -15} ||  {1, -15} || {2, -15} || {3, -15} || {4, -15} || {5, -15} || {6, -15}  ",
             "Id", "Số tài khoản", "Tên tài khoản", "tên người dùng", "sô điện thoại", "Số dư", "Trạng thái");
@@ -51,7 +50,7 @@ public class AdminController : AdminControllerInterface
     {
         Console.WriteLine("Vui lòng nhập tên tài khoản");
         string userName = Console.ReadLine();
-        UserAccountBank userAccountBank = _adminAccountBankRepository.finByUserName(userName);
+        UserAccountBank? userAccountBank = _adminAccountBankRepository.FindByUserName(userName);
         DisplayByPersonalInfo(userAccountBank);
     }
 
@@ -59,7 +58,7 @@ public class AdminController : AdminControllerInterface
     {
         Console.WriteLine("Vui lòng nhập số tài khoản:");
         string accountNumber = Console.ReadLine();
-        UserAccountBank userAccountBank = _adminAccountBankRepository.finByAccountNumber(accountNumber);
+        UserAccountBank? userAccountBank = _adminAccountBankRepository.FindByAccountNumber(accountNumber);
         DisplayByPersonalInfo(userAccountBank);
     }
 
@@ -67,7 +66,7 @@ public class AdminController : AdminControllerInterface
     {
         Console.WriteLine("Vui lòng nhập phone:");
         string phone = Console.ReadLine();
-        UserAccountBank userAccountBank = _adminAccountBankRepository.finByPhone(phone);
+        UserAccountBank? userAccountBank = _adminAccountBankRepository.FindByPhone(phone);
         DisplayByPersonalInfo(userAccountBank);
     }
 
@@ -82,16 +81,17 @@ public class AdminController : AdminControllerInterface
         userAccountBank.Name = Console.ReadLine();
         Console.WriteLine("Nhập mật khẩu:");
         string password = Console.ReadLine();
-        string encryptPassword =  _passwordSecurity.EncryptPassword(password);
+        string encryptPassword = _passwordSecurity.EncryptPassword(password);
         Console.WriteLine("Nhập lại mật khẩu ");
         string checkPassword = Console.ReadLine();
-        bool check = _passwordSecurity.DecryptPassword(checkPassword,encryptPassword);
+        bool check = _passwordSecurity.DecryptPassword(checkPassword, encryptPassword);
         while (check != true)
         {
             Console.WriteLine("Nhập mật khẩu sai vui lòng nhập lại :");
             checkPassword = Console.ReadLine();
-            check = _passwordSecurity.DecryptPassword(checkPassword,encryptPassword);
+            check = _passwordSecurity.DecryptPassword(checkPassword, encryptPassword);
         }
+
         userAccountBank.PassWord = encryptPassword;
         Console.WriteLine("Nhập Số điện thoại:");
         userAccountBank.Phone = Console.ReadLine();
@@ -128,7 +128,7 @@ public class AdminController : AdminControllerInterface
         userAccountBank.AccountNumber = randomDigits;
         Console.WriteLine("Số tài khoản của bạn là : " + userAccountBank.AccountNumber);
 
-        _adminAccountBankRepository.save(userAccountBank);
+        _adminAccountBankRepository.Save(userAccountBank);
     }
 
     // khóa hoặc mở khóa tài khoản
@@ -144,7 +144,7 @@ public class AdminController : AdminControllerInterface
             y = int.Parse(Console.ReadLine());
         }
 
-        _adminAccountBankRepository.lockOrUnlock(accountNumber, y);
+        _adminAccountBankRepository.LockOrUnlock(accountNumber, y);
     }
 
     //tim kiếm lịch sử giao dịch theo số tài khoản
@@ -152,7 +152,8 @@ public class AdminController : AdminControllerInterface
     {
         Console.WriteLine("Vui lòng nhập số tài khoản");
         string accountBank = Console.ReadLine();
-        List<UserAccountBank> userAccountBanks = _adminAccountBankRepository.transactionHistoryByAccountBank(accountBank);
+        List<UserAccountBank> userAccountBanks =
+            _adminAccountBankRepository.TransactionHistoryByAccountBank(accountBank);
         Console.WriteLine("{0,-30} {1,-30} {2,-30} {3,-30}", "Account Number", "Transaction history",
             "Transaction history content", "Create at");
         foreach (var transaction in userAccountBanks)
@@ -167,7 +168,7 @@ public class AdminController : AdminControllerInterface
     {
         UserAccountBank userAccountBank = new UserAccountBank();
         Console.WriteLine("Vui lòng nhập số tài khoản bạn muốn thay đổi");
-        string accountNumber = Console.ReadLine();
+        string? accountNumber = Console.ReadLine();
         Console.WriteLine("Nhập tên : ");
         userAccountBank.Name = Console.ReadLine();
         Console.WriteLine("Nhập số điện thoại:");
@@ -178,33 +179,34 @@ public class AdminController : AdminControllerInterface
             userAccountBank.Phone = Console.ReadLine();
         }
 
-        _adminAccountBankRepository.editPersonalInformation(userAccountBank, accountNumber);
+        _adminAccountBankRepository.EditPersonalInformation(userAccountBank, accountNumber);
     }
 
     public void ChangePasswordInformation()
     {
         UserAccountBank userAccountBank = new UserAccountBank();
         Console.WriteLine("Vui lòng nhập số tài khoản bạn muốn thay đổi");
-        string accountNumber = Console.ReadLine();
+        string? accountNumber = Console.ReadLine();
         Console.WriteLine("Nhập mật khẩu cũ : ");
         string password = Console.ReadLine();
-        _checkAccountRepository.checkAccountBankByAccountBank(accountNumber,password);
+        _checkAccountRepository.CheckAccountBankByAccountBank(accountNumber, password);
         Console.WriteLine("Nhập mật khẩu mới:");
         string newPassword = Console.ReadLine();
-        string encryptPassword =  _passwordSecurity.EncryptPassword(newPassword);
+        string encryptPassword = _passwordSecurity.EncryptPassword(newPassword);
         Console.WriteLine("Nhập lại mật khẩu ");
         string checkPassword = Console.ReadLine();
-        bool check = _passwordSecurity.DecryptPassword(checkPassword,encryptPassword);
+        bool check = _passwordSecurity.DecryptPassword(checkPassword, encryptPassword);
         while (check != true)
         {
             Console.WriteLine("Nhập mật khẩu sai vui lòng nhập lại :");
             checkPassword = Console.ReadLine();
-            check = _passwordSecurity.DecryptPassword(checkPassword,encryptPassword);
+            check = _passwordSecurity.DecryptPassword(checkPassword, encryptPassword);
         }
+
         userAccountBank.PassWord = encryptPassword;
 
         string salt = BCrypt.Net.BCrypt.GenerateSalt();
         userAccountBank.PassWord = BCrypt.Net.BCrypt.HashPassword(newPassword, salt);
-        _adminAccountBankRepository.changePassword(userAccountBank, accountNumber, password);
+        _adminAccountBankRepository.ChangePassword(userAccountBank, accountNumber, password);
     }
 }

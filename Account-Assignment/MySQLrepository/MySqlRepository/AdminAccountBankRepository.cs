@@ -1,27 +1,27 @@
 using System.Data;
 using System.Data.Common;
-using System.Net.Sockets;
-using Account_Assignment.Eniti;
+using Account_Assignment.Enity;
+using Account_Assignment.MySQLrepository.Interface;
 using MySqlConnector;
 
+namespace Account_Assignment.MySQLrepository.MySqlRepository;
 
-namespace Account_Assignment.MySQLrepository;
-
-public class AdminAccountBankRepository : CommonFunctionRepository, AdminAccountBankRepositoryInterface
+public class AdminAccountBankRepository : CommonFunctionRepository, IAdminAccountBankRepository
 {
-    string myConnectionString = "server=127.0.0.1;uid=root;" +
-                                "pwd=;database=account-bank";
+    string _myConnectionString = "server=127.0.0.1;uid=root;" +
+                                 "pwd=;database=account-bank";
 
     // hiển thị danh sách
-    public List<UserAccountBank> finAllUser()
+    public List<UserAccountBank> FindAllUser()
     {
         List<UserAccountBank> userAccountBanks = new List<UserAccountBank>();
 
         try
         {
-            MySqlConnection conn = new MySqlConnection(myConnectionString);
+            MySqlConnection conn = new MySqlConnection(_myConnectionString);
             conn.Open();
-            MySqlCommand sqlCommand = new MySqlCommand("Select * from user_account where status != -1 ", conn);
+            string query = "Select * from user_account where status != -1 ";
+            MySqlCommand sqlCommand = new MySqlCommand(query, conn);
             sqlCommand.Connection = conn;
             DbDataReader reader = sqlCommand.ExecuteReader();
             while (reader.Read())
@@ -48,12 +48,12 @@ public class AdminAccountBankRepository : CommonFunctionRepository, AdminAccount
     }
 
     // hiển thị theo thông tín cá nhân
-    public UserAccountBank finByField(string fieldName, string fieldValue)
+    public UserAccountBank? FindByField(string fieldName, string fieldValue)
     {
-        UserAccountBank userAccountBank = null;
+        UserAccountBank? userAccountBank = null;
         try
         {
-            MySqlConnection conn = new MySqlConnection(myConnectionString);
+            MySqlConnection conn = new MySqlConnection(_myConnectionString);
             conn.Open();
             string query =
                 $"Select id , account_number,user_name,name,phone,balance,status from user_account where {fieldName} = @fieldValue;";
@@ -83,27 +83,27 @@ public class AdminAccountBankRepository : CommonFunctionRepository, AdminAccount
         return userAccountBank;
     }
 
-    public UserAccountBank finByUserName(string userName)
+    public UserAccountBank? FindByUserName(string userName)
     {
-        return finByField("user_name", userName);
+        return FindByField("user_name", userName);
     }
 
-    public UserAccountBank finByAccountNumber(string accountNumber)
+    public UserAccountBank? FindByAccountNumber(string accountNumber)
     {
-        return finByField("account_number", accountNumber);
+        return FindByField("account_number", accountNumber);
     }
 
-    public UserAccountBank finByPhone(string phone)
+    public UserAccountBank? FindByPhone(string phone)
     {
-        return finByField("phone", phone);
+        return FindByField("phone", phone);
     }
 
     // mở , khóa tài khoản
-    public void lockOrUnlock(String accountNumber, int choice)
+    public void LockOrUnlock(String accountNumber, int choice)
     {
         try
         {
-            MySqlConnection conn = new MySqlConnection(myConnectionString);
+            MySqlConnection conn = new MySqlConnection(_myConnectionString);
             conn.Open();
             // log acc 
             if (choice == 1)

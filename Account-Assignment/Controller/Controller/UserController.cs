@@ -1,16 +1,17 @@
-using Account_Assignment.Eniti;
-using Account_Assignment.MySQLrepository;
+using Account_Assignment.Controller.Interface;
+using Account_Assignment.Enity;
+using Account_Assignment.MySQLrepository.MySqlRepository;
 
-namespace Account_Assignment.Controller;
+namespace Account_Assignment.Controller.Controller;
 
-public class UserController : UserControllerInterface
+public class UserController : IUserControllerInterface
 {
     private UserAccountBankRepository _userAccountBankRepository = new UserAccountBankRepository();
     private PasswordSecurity.PasswordSecurity _passwordSecurity = new PasswordSecurity.PasswordSecurity();
     private CheckAccountRepository _checkAccountRepository = new CheckAccountRepository();
 
 
-    public void DepositMoney(string accountNumber)
+    public void DepositMoney(string? accountNumber)
     {
         UserAccountBank userAccountBank = new UserAccountBank();
         userAccountBank.AccountNumber = accountNumber;
@@ -20,10 +21,10 @@ public class UserController : UserControllerInterface
         Console.WriteLine("Nhập nội dung  ");
         userAccountBank.TransactionHistoryContent = Console.ReadLine();
         userAccountBank.CreatedAt = DateTime.Now;
-        _userAccountBankRepository.depositMoney(userAccountBank, tractionAmount);
+        _userAccountBankRepository.DepositMoney(userAccountBank, tractionAmount);
     }
 
-    public void WithdrawMoney(string accountNumber)
+    public void WithdrawMoney(string? accountNumber)
     {
         UserAccountBank userAccountBank = new UserAccountBank();
 
@@ -34,10 +35,10 @@ public class UserController : UserControllerInterface
         Console.WriteLine("Nhập nội dung :");
         userAccountBank.TransactionHistoryContent = Console.ReadLine();
         userAccountBank.CreatedAt = DateTime.Now;
-        _userAccountBankRepository.withdrawMoney(userAccountBank, tractionAmount);
+        _userAccountBankRepository.WithdrawMoney(userAccountBank, tractionAmount);
     }
 
-    public void TransferMoney(string accountNumber)
+    public void TransferMoney(string? accountNumber)
     {
         UserAccountBank userAccountBank = new UserAccountBank();
 
@@ -53,10 +54,10 @@ public class UserController : UserControllerInterface
         Console.WriteLine("Nhập nội dung :");
         userAccountBank.TransactionHistoryContent = Console.ReadLine();
         userAccountBank.CreatedAt = DateTime.Now;
-        _userAccountBankRepository.transferMoney(userAccountBank, tractionAmount);
+        _userAccountBankRepository.TransferMoney(userAccountBank, tractionAmount);
     }
 
-    public void CheckBalance(string accountNumber)
+    public void CheckBalance(string? accountNumber)
     {
         UserAccountBank userAccountBank = new UserAccountBank();
         userAccountBank.AccountNumber = accountNumber;
@@ -64,7 +65,7 @@ public class UserController : UserControllerInterface
         Console.WriteLine("Balace : " + userAccountBank.Balance);
     }
 
-    public void EditPersonalInformation(string accountNumber)
+    public void EditPersonalInformation(string? accountNumber)
     {
         UserAccountBank userAccountBank = new UserAccountBank();
         Console.WriteLine("Nhập tên : ");
@@ -77,37 +78,39 @@ public class UserController : UserControllerInterface
             userAccountBank.Phone = Console.ReadLine();
         }
 
-        _userAccountBankRepository.editPersonalInformation(userAccountBank, accountNumber);
+        _userAccountBankRepository.EditPersonalInformation(userAccountBank, accountNumber);
     }
 
-    public void ChangePassword(string accountNumber)
+    public void ChangePassword(string? accountNumber)
     {
         UserAccountBank userAccountBank = new UserAccountBank();
         Console.WriteLine("Nhập mật khẩu cũ : ");
         string password = Console.ReadLine();
-        _checkAccountRepository.checkAccountBankByAccountBank(accountNumber,password);
+        _checkAccountRepository.CheckAccountBankByAccountBank(accountNumber, password);
         Console.WriteLine("Nhập mật khẩu mới:");
         string newPassword = Console.ReadLine();
-        string encryptPassword =  _passwordSecurity.EncryptPassword(newPassword);
+        string encryptPassword = _passwordSecurity.EncryptPassword(newPassword);
         Console.WriteLine("Nhập lại mật khẩu ");
         string checkPassword = Console.ReadLine();
-        bool check = _passwordSecurity.DecryptPassword(checkPassword,encryptPassword);
+        bool check = _passwordSecurity.DecryptPassword(checkPassword, encryptPassword);
         while (check != true)
         {
             Console.WriteLine("Nhập mật khẩu sai vui lòng nhập lại :");
             checkPassword = Console.ReadLine();
-            check = _passwordSecurity.DecryptPassword(checkPassword,encryptPassword);
+            check = _passwordSecurity.DecryptPassword(checkPassword, encryptPassword);
         }
+
         userAccountBank.PassWord = encryptPassword;
 
         string salt = BCrypt.Net.BCrypt.GenerateSalt();
         userAccountBank.PassWord = BCrypt.Net.BCrypt.HashPassword(newPassword, salt);
-        _userAccountBankRepository.changePassword(userAccountBank, accountNumber, password);
+        _userAccountBankRepository.ChangePassword(userAccountBank, accountNumber, password);
     }
 
-    public void ViewTransactionHistory(string accountNumber)
+    public void ViewTransactionHistory(string? accountNumber)
     {
-        List<UserAccountBank> userAccountBanks = _userAccountBankRepository.transactionHistoryByAccountBank(accountNumber);
+        List<UserAccountBank> userAccountBanks =
+            _userAccountBankRepository.TransactionHistoryByAccountBank(accountNumber);
         Console.WriteLine("{0,-30} {1,-30} {2,-30} {3,-30}", "Account Number", "Transaction history",
             "Transaction history content", "Create at");
         foreach (var transaction in userAccountBanks)

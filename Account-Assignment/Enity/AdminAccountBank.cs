@@ -1,4 +1,4 @@
-namespace Account_Assignment.Eniti;
+namespace Account_Assignment.Enity;
 
 public class AdminAccountBank : UserAccountBank
 {

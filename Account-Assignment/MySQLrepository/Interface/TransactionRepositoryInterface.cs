@@ -1,10 +1,9 @@
-using Account_Assignment.Eniti;
+using Account_Assignment.Enity;
 
-namespace Account_Assignment.MySQLrepository;
+namespace Account_Assignment.MySQLrepository.Interface;
 
-public interface TransactionRepositoryInterface
+public interface ITransactionRepository
 {
-    List<UserAccountBank> transactionHistoryByAccountBank(String accountNumber);
-    List<UserAccountBank> transactionHistory();
-        
+    List<UserAccountBank> TransactionHistoryByAccountBank(string? accountNumber);
+    List<UserAccountBank> TransactionHistory();
 }

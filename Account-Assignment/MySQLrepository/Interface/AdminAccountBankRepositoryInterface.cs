@@ -1,13 +1,13 @@
-using Account_Assignment.Eniti;
+using Account_Assignment.Enity;
 
-namespace Account_Assignment.MySQLrepository;
+namespace Account_Assignment.MySQLrepository.Interface;
 
-public interface AdminAccountBankRepositoryInterface 
+public interface IAdminAccountBankRepository
 {
-    List<UserAccountBank> finAllUser();
-    UserAccountBank finByField(string fieldName, string fieldValue);
-    UserAccountBank finByUserName(String userName);
-    UserAccountBank finByAccountNumber(String accountNumber);
-    UserAccountBank finByPhone(String phone);
-    void lockOrUnlock(String accountNumber, int choice);
+    List<UserAccountBank> FindAllUser();
+    UserAccountBank? FindByField(string fieldName, string fieldValue);
+    UserAccountBank? FindByUserName(String userName);
+    UserAccountBank? FindByAccountNumber(String accountNumber);
+    UserAccountBank? FindByPhone(String phone);
+    void LockOrUnlock(String accountNumber, int choice);
 }
